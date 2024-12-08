@@ -1,0 +1,80 @@
+flowchart TD
+    Start[CBC Analysis] --> InitialCheck{Check HGB-RBC-HCT Pattern}
+    
+    %% Wrong Measurements
+    InitialCheck --> WrongPattern{Wrong Patterns}
+    WrongPattern --> |"HGB-RBC-HCT:<br/>Low-Low-High OR<br/>Low-Normal-High OR<br/>Low-High-High OR<br/>Normal-Low-High OR<br/>Normal-High-Low OR<br/>High-Low-Low OR<br/>High-Low-High OR<br/>High-Low-Normal OR<br/>High-Normal-Low OR<br/>High-High-Low OR<br/>High-High-Normal"| LabError[Laboratory Error]
+    
+    %% Normal Cases
+    InitialCheck --> NormalPattern{Normal Patterns}
+    NormalPattern --> |"HGB-RBC-HCT:<br/>Normal-Normal-Low OR<br/>Normal-Normal-Normal OR<br/>Normal-Normal-High"| MCVCheck1{Check MCV}
+    MCVCheck1 -->|"MCV < 75"| EarlyMicro[Early Microcytic<br/>Iron Deficiency/Beta Thalassemia]
+    MCVCheck1 -->|"75 ≤ MCV ≤ 100"| NormalCase[Normal CBC]
+    MCVCheck1 -->|"MCV > 100"| EarlyMacro[Early Macrocytic]
+    
+    NormalPattern --> |"HGB-RBC-HCT:<br/>Normal-High-Normal OR<br/>Normal-High-High OR<br/>High-Normal-High OR<br/>High-Normal-Normal"| MCVCheck2{Check MCV}
+    MCVCheck2 -->|"MCV < 80"| RDWCheck[Check RDW]
+    RDWCheck -->|RDW > 14.5| EarlyMicroNormal[Early Microcytic - Monitor]
+    RDWCheck -->|RDW ≤ 14.5| ThalassemiaOrMildIron[Thalassemia or mild iron deficiency]
+    MCVCheck2 -->|"MCV Normal"| NormalCase
+    
+    %% Comprehensive Disease Classification
+    InitialCheck --> DiseasePath{Disease Classification<br/>Based on MCV & RDW}
+    
+    %% RDW High + MCV Low Branch
+    DiseasePath --> RDWHighMCVLow["RDW High + MCV Low"]
+    RDWHighMCVLow --> MentzerHML{Mentzer Index}
+    MentzerHML -->|"> 13"| IDAGroup["Primary: Iron Deficiency Anemia<br/>Secondary Possibilities:<br/>- Chronic Illness<br/>- RBC Fragmentation<br/>- G6PD Deficiency"]
+    MentzerHML -->|"< 13"| ThalGroup["Primary: Beta Thalassemia<br/>Secondary Possibility:<br/>- Hemoglobin H"]
+
+    %% RDW Normal + MCV Low Branch
+    DiseasePath --> RDWNormMCVLow["RDW Normal + MCV Low"]
+    RDWNormMCVLow --> MentzerNML{Mentzer Index}
+    MentzerNML -->|"> 13"| LateIronGroup["Primary: Late Iron Deficiency<br/>Secondary Possibilities:<br/>- Chronic Illness<br/>- Hereditary Spherocytosis"]
+    MentzerNML -->|"< 13"| ThalTraitGroup["Primary: Thalassemia Trait<br/>Secondary Possibility:<br/>- Chronic Illness"]
+
+    %% RDW High + MCV Normal Branch
+    DiseasePath --> RDWHighMCVNorm["RDW High + MCV Normal"]
+    RDWHighMCVNorm --> EarlyDefGroup["Possibilities:<br/>- Early Iron Deficiency<br/>- Early B12/Folate Deficiency<br/>- Sickle Cell Anemia"]
+
+    %% RDW Normal + MCV Normal Branch
+    DiseasePath --> RDWNormMCVNorm["RDW Normal + MCV Normal"]
+    RDWNormMCVNorm --> NormNormGroup["Possibilities:<br/>- Myelodysplasia<br/>- Blood Loss<br/>- Chronic Illness<br/>- Hemolysis<br/>- CLL/CML<br/>- Hemoglobinopathy"]
+
+    %% RDW High + MCV High Branch
+    DiseasePath --> RDWHighMCVHigh["RDW High + MCV High"]
+    RDWHighMCVHigh --> MacroHighGroup["Possibilities:<br/>- B12/Folate Deficiency<br/>- Autoimmune Hemolytic Anemia<br/>- Cold Agglutinin<br/>- Alcoholism"]
+
+    %% RDW Normal + MCV High Branch
+    DiseasePath --> RDWNormMCVHigh["RDW Normal + MCV High"]
+    RDWNormMCVHigh --> MacroNormGroup["Possibilities:<br/>- Aplastic Anemia<br/>- Hepatopathy<br/>- Preleukemia<br/>- Myelodysplastic<br/>- Alcoholism"]
+
+    %% RDW Low Branch
+    DiseasePath --> RDWLow["RDW Low"]
+    RDWLow --> LowRDWGroup["Possibilities:<br/>- Aplastic Anemia<br/>- Thalassemia"]
+
+    %% Early Microcytosis
+    InitialCheck --> MicroPattern{"Early Microcytosis Pattern<br/>HGB-RBC-HCT:<br/>Low-High-Low OR<br/>Low-High-Normal"}
+    MicroPattern --> CompResponse[Compensatory Response]
+    
+    %% Anemia Patterns
+    InitialCheck --> AnemiaPattern{"Anemia Patterns<br/>HGB-RBC-HCT:<br/>Low-Low-Low OR<br/>Low-Low-Normal OR<br/>Low-Normal-Low OR<br/>Low-Normal-Normal"}
+    
+    %% Leukemia Branch
+    AnemiaPattern --> LeukemiaSuspicion{"Leukemia Indicators"}
+    LeukemiaSuspicion --> WBCCheck{Check WBC Count}
+    WBCCheck -->|"WBC > 50,000/µL"| HighWBC[High WBC - Suspicious]
+    WBCCheck -->|"WBC < 4,000/µL"| LowWBC[Low WBC - Suspicious]
+    
+    HighWBC --> BlastCheck{Check Blast %}
+    BlastCheck -->|"Blasts > 20%"| AML["AML Suspect<br/>1. Check bone marrow<br/>2. Flow cytometry"]
+    BlastCheck -->|"Blasts < 20%<br/>High mature WBC"| CML["CML Suspect<br/>1. Check BCR-ABL<br/>2. Bone marrow biopsy"]
+    
+    LowWBC --> LymphCheck{Check Lymphocytes}
+    LymphCheck -->|"Mature Lymphs > 5,000/µL"| CLL["CLL Suspect<br/>1. Flow cytometry<br/>2. FISH analysis"]
+    LymphCheck -->|"Blasts present"| ALL["ALL Suspect<br/>1. Flow cytometry<br/>2. Genetic testing"]
+    
+    %% Additional Criteria for Leukemia
+    LeukemiaSuspicion --> PLTCheck{Check Platelets}
+    PLTCheck -->|"PLT < 100,000/µL"| LowPLT[Suspicious - Check Bone Marrow]
+    PLTCheck -->|"PLT > 450,000/µL"| HighPLT[Check for MPN]

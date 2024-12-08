@@ -1,0 +1,66 @@
+flowchart TD
+    %% Start and Initial Checks
+    Start[CBC Analysis] --> InitialCheck{Check HGB-RBC-HCT Pattern}
+    
+    %% Wrong Measurements Path
+    InitialCheck --> WrongPattern{Wrong Patterns}
+    WrongPattern --> |"HGB-RBC-HCT:<br/>Low-Low-High OR...<br/>High-High-Normal"| LabError[Laboratory Error]
+
+    %% Normal Patterns Path
+    InitialCheck --> NormalPattern{Normal Patterns}
+    NormalPattern --> |"Normal-Normal-Low/Normal/High"| MCVCheck1{Check MCV}
+    MCVCheck1 -->|"MCV < 75"| EarlyMicro[Early Microcytic<br/>Iron Deficiency/Beta Thalassemia]
+    MCVCheck1 -->|"75 ≤ MCV ≤ 100"| NormalCase[Normal CBC]
+    MCVCheck1 -->|"MCV > 100"| EarlyMacro[Early Macrocytic]
+    
+    %% Disease Classification
+    InitialCheck --> DiseasePath{Disease Classification<br/>Based on MCV & RDW}
+    
+    DiseasePath --> RDWHighMCVLow["RDW High + MCV Low"]
+    RDWHighMCVLow --> MentzerHML{Mentzer Index}
+    MentzerHML -->|"> 13"| IDAGroup["Iron Deficiency Anemia"]
+    MentzerHML -->|"< 13"| ThalGroup["Beta Thalassemia"]
+
+    DiseasePath --> RDWNormMCVLow["RDW Normal + MCV Low"]
+    RDWNormMCVLow --> MentzerNML{Mentzer Index}
+    MentzerNML -->|"> 13"| LateIronGroup["Late Iron Deficiency"]
+    MentzerNML -->|"< 13"| ThalTraitGroup["Thalassemia Trait"]
+
+    DiseasePath --> RDWHighMCVNorm["RDW High + MCV Normal"]
+    RDWHighMCVNorm --> EarlyDefGroup["Early Deficiencies (Iron, B12/Folate, Sickle Cell)"]
+
+    DiseasePath --> RDWNormMCVNorm["RDW Normal + MCV Normal"]
+    RDWNormMCVNorm --> NormNormGroup["Chronic Illness, Hemolysis, etc."]
+
+    DiseasePath --> RDWHighMCVHigh["RDW High + MCV High"]
+    RDWHighMCVHigh --> MacroHighGroup["Macrocytic Conditions"]
+
+    DiseasePath --> RDWNormMCVHigh["RDW Normal + MCV High"]
+    RDWNormMCVHigh --> MacroNormGroup["Aplastic Anemia, etc."]
+
+    DiseasePath --> RDWLow["RDW Low"]
+    RDWLow --> LowRDWGroup["Thalassemia, Aplastic Anemia"]
+
+    %% Additional Anemia Patterns
+    InitialCheck --> AnemiaPattern{"Anemia Patterns"}
+    AnemiaPattern --> LeukemiaSuspicion{"Leukemia Indicators"}
+    LeukemiaSuspicion --> WBCCheck{Check WBC Count}
+    WBCCheck -->|"WBC > 50,000/µL"| HighWBC[High WBC - Suspicious]
+    WBCCheck -->|"WBC < 4,000/µL"| LowWBC[Low WBC - Suspicious]
+
+    %% Early Microcytosis Path
+    InitialCheck --> MicroPattern{"Early Microcytosis Pattern"}
+    MicroPattern --> CompResponse[Compensatory Response]
+
+    %% WBC and PLT Combined Critical Cases
+    subgraph Combined["Critical Combinations"]
+        CritStart[Start Combined Analysis] --> LeukemiaCheck{Check Leukemia Indicators}
+        
+        LeukemiaCheck -->|"WBC > 25,000<br/>Anemia/PLT Issues"| AcuteLeukemia[Acute Leukemia]
+        LeukemiaCheck -->|"High WBC<br/>Anemia/PLT Issues"| ChronicLeukemia[Chronic Leukemia]
+    end
+
+    %% Links between subgraphs
+    WBCValues -->|"Critical Patterns"| CritStart
+    PLTValues -->|"Critical Patterns"| CritStart
+

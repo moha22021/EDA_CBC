@@ -1,0 +1,71 @@
+flowchart TD
+    Start[Comprehensive WBC Differential Analysis] --> WBCTotalCheck{Total WBC Count Evaluation}
+    
+    %% Total WBC Count Classification
+    WBCTotalCheck -->|"< 4,500/µL"| Leukopenia[Leukopenia Diagnostic Pathway]
+    WBCTotalCheck -->|"4,500-11,000/µL"| NormalWBC[Normal WBC Range]
+    WBCTotalCheck -->|"> 11,000/µL"| Leukocytosis[Leukocytosis Diagnostic Pathway]
+    
+    %% Neutrophil (NE) Analysis
+    NormalWBC --> NeutrophilCheck{Neutrophil Assessment}
+    Leukopenia --> NeutrophilLowCheck{Neutrophil Low}
+    Leukocytosis --> NeutrophilHighCheck{Neutrophil High}
+    
+    NeutrophilCheck -->|"NE% Low (< 40%)"| NeutropeniaSuspicion[Potential Causes:
+    - Viral Infections
+    - Bone Marrow Suppression
+    - Autoimmune Disorders
+    - Medication Side Effects]
+    
+    NeutrophilCheck -->|"NE% High (> 75%)"| NeutrophiliaInfection[Potential Causes:
+    - Acute Bacterial Infections
+    - Inflammatory Conditions
+    - Tissue Necrosis
+    - Early Leukemia]
+    
+    %% Lymphocyte (LY) Analysis
+    NormalWBC --> LymphocyteCheck{Lymphocyte Assessment}
+    Leukopenia --> LymphocyteLowCheck{Lymphocyte Low}
+    Leukocytosis --> LymphocyteHighCheck{Lymphocyte High}
+    
+    LymphocyteCheck -->|"LY% Low (< 20%)"| LymphopeniaSuspicion[Potential Causes:
+    - Immunodeficiency
+    - HIV/AIDS
+    - Chemotherapy
+    - Severe Stress]
+    
+    LymphocyteCheck -->|"LY% High (> 50%)"| LymphocytosisCheck[Potential Causes:
+    - Viral Infections
+    - Chronic Lymphocytic Leukemia
+    - Infectious Mononucleosis
+    - Lymphoma]
+    
+    %% Monocyte (MO) Analysis
+    NormalWBC --> MonocyteCheck{Monocyte Assessment}
+    Leukocytosis --> MonocyteHighCheck{Monocyte High}
+    
+    MonocyteCheck -->|"MO% High (> 10%)"| MonocytosisCheck[Potential Causes:
+    - Chronic Infections
+    - Tuberculosis
+    - Autoimmune Disorders
+    - Certain Cancers]
+    
+    %% Eosinophil (EO) Analysis
+    NormalWBC --> EosinophilCheck{Eosinophil Assessment}
+    Leukocytosis --> EosinophilHighCheck{Eosinophil High}
+    
+    EosinophilCheck -->|"EO% High (> 5%)"| EosinophiliaCheck[Potential Causes:
+    - Allergic Reactions
+    - Parasitic Infections
+    - Autoimmune Diseases
+    - Certain Cancers]
+    
+    %% Basophil (BA) Analysis
+    NormalWBC --> BasophilCheck{Basophil Assessment}
+    Leukocytosis --> BasophilHighCheck{Basophil High}
+    
+    BasophilCheck -->|"BA% High (> 2%)"| BasophiliaCheck[Potential Causes:
+    - Chronic Inflammation
+    - Certain Leukemias
+    - Hypothyroidism
+    - Inflammatory Conditions]

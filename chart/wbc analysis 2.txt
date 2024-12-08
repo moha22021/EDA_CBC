@@ -1,0 +1,51 @@
+flowchart TD
+    Start[WBC Analysis] --> InitialWBC{Check Total WBC Count}
+    
+    %% Severe Leukocytosis Branch
+    InitialWBC -->|"> 50,000/µL"| SevereLeuko[Severe Leukocytosis]
+    SevereLeuko --> BlastCheck{Check Blasts}
+    BlastCheck -->|"Blasts ≥ 20%"| AML["AML Suspect:<br/>- Check bone marrow<br/>- Flow cytometry<br/>- Genetic testing"]
+    BlastCheck -->|"Blasts < 20%"| DiffCount1{Differential Count}
+    
+    DiffCount1 --> |"NE# > 30,000/µL"| CML["CML Suspect:<br/>1. BCR-ABL testing<br/>2. JAK2 mutation<br/>3. Bone marrow biopsy"]
+    DiffCount1 --> |"LY# > 30,000/µL"| CLL["CLL Suspect:<br/>1. Flow cytometry<br/>2. FISH analysis<br/>3. Check CD markers"]
+    
+    %% Moderate Leukocytosis Branch
+    InitialWBC -->|"11,000-50,000/µL"| ModerateLeuko[Moderate Leukocytosis]
+    ModerateLeuko --> DiffCount2{Differential Count}
+    DiffCount2 -->|"NE# > 7,500/µL"| Neutrophilia["Neutrophilia:<br/>- Infection<br/>- Inflammation<br/>- Early CML"]
+    DiffCount2 -->|"LY# > 4,000/µL"| Lymphocytosis["Lymphocytosis:<br/>- Viral infection<br/>- Early CLL<br/>- Lymphoma"]
+    DiffCount2 -->|"MO# > 1,000/µL"| Monocytosis["Monocytosis:<br/>- CMML<br/>- Infection<br/>- Autoimmune"]
+    DiffCount2 -->|"EO# > 1,500/µL"| Eosinophilia["Eosinophilia:<br/>- Allergy<br/>- Parasitic<br/>- HES"]
+    DiffCount2 -->|"BA# > 200/µL"| Basophilia["Basophilia:<br/>- CML<br/>- Allergy<br/>- Inflammation"]
+    
+    %% Leukopenia Branch
+    InitialWBC -->|"< 4,000/µL"| Leukopenia[Leukopenia]
+    Leukopenia --> DiffCount3{Differential Count}
+    DiffCount3 -->|"NE# < 1,500/µL"| Neutropenia["Neutropenia:<br/>- Aplastic anemia<br/>- Drug-induced<br/>- Early AML"]
+    DiffCount3 -->|"LY# < 1,000/µL"| Lymphopenia["Lymphopenia:<br/>- HIV<br/>- Chemotherapy<br/>- ALL"]
+    
+    %% Combined Abnormalities
+    InitialWBC --> CombinedCheck{Check Combined Parameters}
+    CombinedCheck --> |"WBC > 25k + PLT < 100k"| AcuteLeuk["Acute Leukemia Likely:<br/>1. Urgent bone marrow<br/>2. Cytogenetics"]
+    CombinedCheck --> |"WBC > 25k + PLT > 450k"| ChronicLeuk["Chronic MPNs:<br/>1. JAK2 testing<br/>2. BCR-ABL"]
+    
+    %% Blast Patterns
+    InitialWBC --> BlastPattern{Blast Patterns}
+    BlastPattern --> |"Blasts ≥ 20%<br/>Any WBC count"| AcuteLeukemia["Acute Leukemia:<br/>- AML if myeloid<br/>- ALL if lymphoid"]
+    BlastPattern --> |"Blasts 5-19%"| MDS["MDS/Early Leukemia:<br/>1. Bone marrow<br/>2. Cytogenetics"]
+    
+    %% Special Considerations
+    InitialWBC --> SpecialCases{Special Cases}
+    SpecialCases --> |"Pancytopenia"| PanCases["Check For:<br/>1. Aplastic anemia<br/>2. PNH<br/>3. Early leukemia"]
+    SpecialCases --> |"Bicytopenia"| BiCases["Check For:<br/>1. MDS<br/>2. Early leukemia<br/>3. Bone marrow failure"]
+    
+    %% PLT Integration
+    InitialWBC --> PLTCheck{Check PLT Count}
+    PLTCheck -->|"PLT < 50,000/µL"| SevereThromb["Severe Thrombocytopenia:<br/>1. Check bone marrow<br/>2. Rule out DIC"]
+    PLTCheck -->|"PLT > 1,000,000/µL"| ExtremeThromb["Extreme Thrombocytosis:<br/>1. JAK2 testing<br/>2. Check for MPN"]
+    
+    %% MPV Considerations
+    PLTCheck --> MPVCheck{Check MPV}
+    MPVCheck -->|"MPV > 12.0 fL"| HighMPV["High MPV:<br/>- ITP<br/>- Bernard-Soulier<br/>- Pre-AML"]
+    MPVCheck -->|"MPV < 7.0 fL"| LowMPV["Low MPV:<br/>- Aplastic anemia<br/>- WAS<br/>- Pre-ALL"]
