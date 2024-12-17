@@ -31,16 +31,17 @@ Contains images used in the project
 
 ## Main Notebook Files Description
 
-1. **setup.ipynb**
-- This code is an implementation attempt of the results of data analysis of CBC.
 
-2. **Data_preparation.ipynb**
+1. **Data_preparation.ipynb**
    - Data loading and cleaning
    - Missing values handling
    - Data transformation and formatting
 
-3. **EDA.ipynb**
+2. **EDA.ipynb**
    - Comprehensive exploratory data analysis
    - Visualizations and descriptive statistics
    - Variable relationships exploration
    - Statistical analysis and insights
+  
+   3. **setup.ipynb**
+- This code is an implementation attempt of the results of data analysis of CBC.
