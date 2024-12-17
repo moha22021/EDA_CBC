@@ -43,5 +43,7 @@ Contains images used in the project
    - Variable relationships exploration
    - Statistical analysis and insights
   
-   3. **setup.ipynb**
-- This code is an implementation attempt of the results of data analysis of CBC.
+3. **setup.ipynb**
+   - This code is an implementation attempt of the results of data analysis of CBC.
+  
+
